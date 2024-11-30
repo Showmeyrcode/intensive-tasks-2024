@@ -24,17 +24,19 @@ public class Task1 {
         int decimalRemainder = age % 100;
 
         if (age < 0) {
-            return ("Некорректный ввод");
+            return "Некорректный ввод";
         }
 
         if (decimalRemainder >= 11 && decimalRemainder <= 15) {
-            return ("Вам " + age + " лет");
+            return "Вам " + age + " лет";
         }
 
-        return switch (remainder) {
-            case 2, 3, 4 -> ("Вам " + age + " года");
-            case 0, 5, 6, 7, 8, 9 -> ("Вам " + age + " лет");
-            default -> ("Вам " + age + " год");
-        };
+        if (remainder == 2 || remainder == 3 || remainder == 4) {
+            return "Вам " + age + " года";
+        } else if (remainder == 0 || remainder == 5 || remainder == 6 || remainder == 7 || remainder == 8 || remainder == 9) {
+            return "Вам " + age + " лет";
+        }
+
+        return "Вам " + age + " год";
     }
 }
