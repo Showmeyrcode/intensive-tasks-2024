@@ -33,12 +33,45 @@ package com.walking.intensive.chapter1.task2;
  */
 public class Task2 {
     public static void main(String[] args) {
-//        Для собственных проверок можете делать любые изменения в этом методе
+
     }
 
     static String getFlatLocation(int floorAmount, int entranceAmount, int flatNumber) {
-        //        Место для вашего кода
+        if (floorAmount <= 0 || entranceAmount <= 0 || flatNumber <= 0) {
+            return "Некорректные входные данные";
+        }
 
-        return null; // Заглушка. При реализации - удалить
+        int flatEntranceAmount = floorAmount * 4; // Квартир в одном подъезде
+        int flatMaxNumber = flatEntranceAmount * entranceAmount; // Всего квартир в доме
+
+        if (flatNumber > flatMaxNumber) {
+            return "Такой квартиры не существует";
+        }
+
+        int currentEntrance; // Подъезд
+        if (flatNumber <= flatEntranceAmount) {
+            currentEntrance = 1;
+        } else {
+            if (flatNumber % flatEntranceAmount == 0) {
+                currentEntrance = flatNumber / flatEntranceAmount;
+            } else {
+                currentEntrance = (flatNumber / flatEntranceAmount) + 1;
+            }
+        }
+
+        int flatFloor = (flatNumber - (flatEntranceAmount * (currentEntrance - 1))) / 4; // Этаж
+        if (flatNumber % 4 != 0) {
+            flatFloor++;
+        }
+
+        String flatElevatorLocation = switch (flatNumber % 4) {
+            case 0, 3 -> "справа";
+            case 1, 2 -> "слева";
+            default -> "";
+        }; // Расположение относительно лифта
+
+        String flatFloorLocation = flatNumber % 2 == 0 ? "вправо" : "влево"; // Расположение на этаже
+
+        return flatNumber + " кв - " + currentEntrance + " подъезд, " + flatFloor + " этаж, " + flatElevatorLocation + " от лифта, " + flatFloorLocation;
     }
 }
