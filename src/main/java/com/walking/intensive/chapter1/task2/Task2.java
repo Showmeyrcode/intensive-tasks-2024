@@ -41,37 +41,29 @@ public class Task2 {
             return "Некорректные входные данные";
         }
 
-        int flatEntranceAmount = floorAmount * 4; // Квартир в одном подъезде
-        int flatMaxNumber = flatEntranceAmount * entranceAmount; // Всего квартир в доме
+        int flatAmount = floorAmount * 4; // Квартир в одном подъезде
+        int flatMaxNum = flatAmount * entranceAmount; // Всего квартир в доме
 
-        if (flatNumber > flatMaxNumber) {
+        if (flatNumber > flatMaxNum) {
             return "Такой квартиры не существует";
         }
 
-        int currentEntrance; // Подъезд
-        if (flatNumber <= flatEntranceAmount) {
-            currentEntrance = 1;
-        } else {
-            if (flatNumber % flatEntranceAmount == 0) {
-                currentEntrance = flatNumber / flatEntranceAmount;
-            } else {
-                currentEntrance = (flatNumber / flatEntranceAmount) + 1;
-            }
-        }
+        int currentEntrance = flatNumber % flatAmount == 0 ? flatNumber / flatAmount : (flatNumber / flatAmount) + 1;
 
-        int flatFloor = (flatNumber - (flatEntranceAmount * (currentEntrance - 1))) / 4; // Этаж
+        int flatFloor = (flatNumber - (flatAmount * (currentEntrance - 1))) / 4;
         if (flatNumber % 4 != 0) {
             flatFloor++;
         }
 
-        String flatElevatorLocation = switch (flatNumber % 4) {
-            case 0, 3 -> "справа";
-            case 1, 2 -> "слева";
-            default -> "";
-        }; // Расположение относительно лифта
-
         String flatFloorLocation = flatNumber % 2 == 0 ? "вправо" : "влево"; // Расположение на этаже
 
-        return flatNumber + " кв - " + currentEntrance + " подъезд, " + flatFloor + " этаж, " + flatElevatorLocation + " от лифта, " + flatFloorLocation;
+        // Расположение относительно лифта
+        String flatLiftLocation = switch (flatNumber % 4) {
+            case 0, 3 -> " справа от лифта, " + flatFloorLocation;
+            case 1, 2 -> " слева от лифта, " + flatFloorLocation;
+            default -> throw new IllegalStateException("Unexpected value: " + flatNumber % 4);
+        };
+
+        return flatNumber + " кв - " + currentEntrance + " подъезд, " + flatFloor + " этаж," + flatLiftLocation;
     }
 }
